@@ -1,1 +1,1 @@
-web: gunicorn -b :$PORT proj.wsgi --timeout 5000
+web: gunicorn -b :$PORT MPC_project.wsgi --timeout 5000
