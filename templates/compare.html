@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MPC</title>
+    <link rel="stylesheet" href="../static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../static/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../static/assets/vendors/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="../static/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../static/assets/vendors/owl-carousel-2/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../static/assets/css/style.css">
+    <link rel="shortcut icon" href="../static/assets/images/favicon.png" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+          <a class="sidebar-brand brand-logo" href="/index"><span class="text-success" style="text-decoration-line: none">Dashboard</span></a>
+        </div>
+        <ul class="nav">
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="/index">
+              <span class="menu-icon">
+                <i class="mdi mdi-lock-reset"></i>
+              </span>
+              <span class="menu-title">Reset Everything</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title text-success display-3">Mobile Prices Comparision</h4>
+                    <form class="forms-sample" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="col-md-12">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Number of pages to scrap : </label>
+                            <div class="col-sm-9">
+                              <input type="text" class=" form-control" id="page_size" name="page_size" placeholder="Enter the number of pages you want to scrap">
+                            </div>
+                          </div>
+                        </div>
+                      <div class="col-md-12">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Mobile Brand Name : </label>
+                            <div class="col-sm-9">
+                              <select class="form-control" id="search" name="search">
+                                <option>Redmi</option>
+                                <option>Oppo</option>
+                                <option>Vivo</option>
+                                <option>Samsung</option>
+                                <option>Poco</option>
+                                <option>Realme</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      <button type="submit" class="btn btn-outline-success btn-fw"><i class="mdi mdi-file-check btn-icon-prepend"></i>Submit</button>
+                      <a href="/compare" class="btn btn-outline-success btn-fw"><i class="mdi mdi-reload "></i>Reset</a>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Dataset results -->
+            <div class="row">
+              {% if compared_result %}
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Current Mobile Price Difference between
+                      <span class="text-warning">Amazon</span>
+                      <span style="font-weight: lighter;color: #6c7293;" >&</span>
+                      <span class="text-behance">Flipcart</span>
+                      <a href="/download_compared">
+                      <button type="button" class="float-right btn btn-outline-secondary btn-rounded btn-icon">
+                            <i class="mdi mdi-cloud-download text-success"></i>
+                      </button></a>
+                    </h4>
+                    <h5 >Mobile matched in both <span class="text-warning">Amazon</span>
+                      <span style="font-weight: lighter;color: #6c7293;" >&</span>
+                      <span class="text-behance">Flipcart</span> are showed in this based on
+                      <span class="text-primary">Model, Colour, Ram & Storage Size</span>.
+                    </h5>
+                    <br>
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="text-light"> Mobile Name </th>
+                            <th> Colour </th>
+                            <th> Ram </th>
+                            <th> Storage </th>
+                            <th class="text-warning"> Amazon Price </th>
+                            <th class="text-primary"> Flipcart price </th>
+                            <th class="text-danger"> Difference </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in compared_result %}
+                          <tr>
+                            <td class="text-light"> {{result.name}} </td>
+                            <td> {{result.color}} </td>
+                            <td> {{result.ram}} </td>
+                            <td> {{result.rom}} </td>
+                            <td class="text-warning"> {{result.amazon_price}} </td>
+                            <td class="text-primary"> {{result.flipcart_price}} </td>
+                            <td class="text-danger"> {{result.diff}} </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../static/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="../static/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="../static/assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="../static/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="../static/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../static/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../static/assets/js/off-canvas.js"></script>
+    <script src="../static/assets/js/hoverable-collapse.js"></script>
+    <script src="../static/assets/js/misc.js"></script>
+    <script src="../static/assets/js/settings.js"></script>
+    <script src="../static/assets/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="../static/assets/js/dashboard.js"></script>
+    <!-- End custom js for this page -->
+  </body>
+</html>
